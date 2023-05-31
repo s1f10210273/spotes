@@ -20,7 +20,7 @@ def spotify_login(request):
     params = {
         'client_id': SPOTIFY_CLIENT_ID,
         'response_type': 'code',
-        'redirect_uri': SPOTIFY_REDIRECT_URI,
+        'redirect_uri': "https://spoti-quct.onrender.com/spotes/callback/",
         'scope': scope,
     }
     return redirect(f"{auth_url}?{urlencode(params)}")
@@ -42,7 +42,7 @@ def callback(request):
     params = {
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': SPOTIFY_REDIRECT_URI,
+        'redirect_uri': "https://spoti-quct.onrender.com/spotes/callback/",
         'client_id': SPOTIFY_CLIENT_ID,
         'client_secret': SPOTIFY_CLIENT_SECRET,
     }
