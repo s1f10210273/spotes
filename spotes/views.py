@@ -50,7 +50,7 @@ def callback(request):
     access_token = data['access_token']
     request.session["access_token"] = access_token
 
-    return redirect(reverse('spotes:home'))
+    return redirect(reverse('home'))
 
 
 def home(request):
