@@ -32,7 +32,7 @@ def spotify_logout(request):
     }
     response = requests.delete("https://accounts.spotify.com/api/token", headers=headers)
     request.session.flush()
-    return redirect(reverse('index'))
+    return redirect(reverse('spotes/index'))
 
 
 
@@ -51,7 +51,7 @@ def callback(request):
     access_token = data['access_token']
     request.session["access_token"] = access_token
 
-    return redirect(reverse('home'))
+    return redirect(reverse('spotes/home'))
 
 
 def home(request):
@@ -69,7 +69,7 @@ def home(request):
         track_data = track_data.json()
         track_data, jacket_url = makeTrack(track_data)
     elif track_data.status_code == 401:
-        return redirect(reverse('login'))
+        return redirect(reverse('spotes/login'))
     else:
         jacket_url = None
 
