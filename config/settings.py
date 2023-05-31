@@ -20,7 +20,10 @@ environ.Env.read_env(Path.joinpath(BASE_DIR, '.env'))
 
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 DEBUG = env('DEBUG')
-ALLOWED_HOSTS = "https://spoti-quct.onrender.com/"
+ALLOWED_HOSTS = [
+    'spoti-quct.onrender.com',
+    # 他のホスト名
+]
 
 
 # Application definition
