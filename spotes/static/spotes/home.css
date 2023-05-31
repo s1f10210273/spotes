@@ -1,0 +1,31 @@
+.bgImage:before{
+    content: '';
+    background: inherit;
+    -webkit-filter: blur(70px);
+    -moz-filter: blur(70px);
+    -o-filter: blur(70px);
+    -ms-filter: blur(70px);
+    filter: blur(70px);
+    position: absolute;
+    top: -200px;
+    left: -200px;
+    right: -200px;
+    bottom: -200px;
+    z-index: -1;
+    transform: translateZ(0);
+}
+
+#icon {
+    width: 10px;
+    border-radius: 50%;
+}
+
+h1{
+    mix-blend-mode: difference;
+    color:#fff;
+}
+
+h2{
+    mix-blend-mode: difference;
+    color:#fff;
+}

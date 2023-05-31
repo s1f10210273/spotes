@@ -20,7 +20,7 @@ def spotify_login(request):
     params = {
         'client_id': SPOTIFY_CLIENT_ID,
         'response_type': 'code',
-        'redirect_uri': "http://127.0.0.1:8000/spotes/",
+        'redirect_uri': "http://127.0.0.1:8000/spotes/callback",
         'scope': scope,
     }
     return redirect(f"{auth_url}?{urlencode(params)}")
@@ -31,7 +31,7 @@ def callback(request):
     params = {
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': SPOTIFY_REDIRECT_URI,
+        'redirect_uri': "http://127.0.0.1:8000/spotes/callback",
         'client_id': SPOTIFY_CLIENT_ID,
         'client_secret': SPOTIFY_CLIENT_SECRET,
     }
@@ -81,4 +81,4 @@ def home(request):
         'user_error': user_error,
     }
 
-    return render(request, 'home.html', context)
+    return render(request, 'spotes/home.html', context)

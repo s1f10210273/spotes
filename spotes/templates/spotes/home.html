@@ -1,20 +1,17 @@
-{% extends 'base.html' %}
+{% extends "spotes/base.html" %}
 {% load static %}
 {% block content %}
 <div class="row">
         <div class="d-flex justify-content-end">
-            <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src={{ user_data.icon }} id="icon" alt="{{ user_data.name }}">
+            <button class="btn btn-dark">
+                <img src="{{ user_data.icon }}" id="icon" alt="{{ user_data.name }}" style = "width: 30px;">
                 {{ user_data.name }}
             </button>
-            <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a href="../logout" class="dropdown-item" href="#">Logout</a></li>
-            </ul>
         </div>
 
-        <div class="container text-center" style="margin-top:5px">
+        <div class="text-center" style="margin-top:5px">
             {% if bgImageURL is None%}
-                <img src="{% static "NowPlaying/l_e_others_501.png"%}" class="img-fluid" alt="jacket picture is None">
+                <img src="{% static 'l_e_others_501.png'%}" class="img-fluid" alt="jacket picture is None">
             {% else %}
                 <img src="{{ bgImageURL }}" class="img-fluid" alt="jacket picture({{ track_data.album_name }})">
             {% endif %}
