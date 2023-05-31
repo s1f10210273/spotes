@@ -22,6 +22,7 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 DEBUG = env('DEBUG')
 ALLOWED_HOSTS = [
     'spoti-quct.onrender.com',
+    '127.0.0.1',
     # 他のホスト名
 ]
 

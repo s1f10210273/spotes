@@ -25,6 +25,17 @@ def spotify_login(request):
     }
     return redirect(f"{auth_url}?{urlencode(params)}")
 
+def spotify_logout(request):
+    access_token = request.session["access_token"]
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+    }
+    response = requests.delete("https://accounts.spotify.com/api/token", headers=headers)
+    request.session.flush()
+    return redirect(reverse('index'))
+
+
+
 def callback(request):
     code = request.GET.get('code')
     token_url = 'https://accounts.spotify.com/api/token'
@@ -82,3 +93,6 @@ def home(request):
     }
 
     return render(request, 'spotes/home.html', context)
+
+
+
