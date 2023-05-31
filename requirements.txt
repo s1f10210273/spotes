@@ -1,3 +1,10 @@
-Django
-Spotipy
+django
 requests
+spotipy
+dj-database-url
+dj-static
+python-decouple
+django-environ
+gunicorn
+psycopg2-binary
+whitenoise
