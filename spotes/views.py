@@ -41,7 +41,7 @@ def callback(request):
     params = {
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': "https://spoti-quct.onrender.com/spotes/home/",
+        'redirect_uri': SPOTIFY_REDIRECT_URI,
         'client_id': SPOTIFY_CLIENT_ID,
         'client_secret': SPOTIFY_CLIENT_SECRET,
     }
