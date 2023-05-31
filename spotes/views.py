@@ -35,7 +35,6 @@ def spotify_logout(request):
     return redirect(reverse('spotes/index'))
 
 
-
 def callback(request):
     code = request.GET.get('code')
     token_url = 'https://accounts.spotify.com/api/token'
@@ -51,7 +50,7 @@ def callback(request):
     access_token = data['access_token']
     request.session["access_token"] = access_token
 
-    return redirect(reverse('spotes/home'))
+    return redirect(reverse('spotes:home'))
 
 
 def home(request):
