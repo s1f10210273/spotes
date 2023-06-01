@@ -106,16 +106,9 @@ def play(request):
     track_data = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
     track_error = processStatusCode(track_data.status_code) + " - track_data"
     if track_data.status_code == 200:
-        track_data = track_data.json()
-        track_data, jacket_url = makeTrack(track_data)
-    elif track_data.status_code == 401:
-        return redirect(reverse('login'))
+        top_tracks = track_data.json()['items']
     else:
-        jacket_url = None
-
-    if track_data == 1:
-        track_error = 'Podcast is playing.'
-
+        top_tracks = []
 
     user_data = requests.get('https://api.spotify.com/v1/me', headers=headers)
     user_error = processStatusCode(user_data.status_code) + " - user_data"
@@ -126,10 +119,10 @@ def play(request):
     context = {
         'title': 'Home | SpotifyNowPlaying',
         'track_data': track_data,
-        'bgImageURL': jacket_url,
         'user_data': user_data,
         'track_error': track_error,
         'user_error': user_error,
+        'top_tracks': top_tracks,
     }
 
     return render(request, 'spotes/play.html', context)
