@@ -117,7 +117,7 @@ def play(request):
         return redirect(reverse('login'))
 
     # Spotify APIから現在再生中のトラック情報を取得
-    track_data = requests.get('https://api.spotify.com/v1/me/top/tracks', headers=headers)
+    track_data = requests.get('https://api.spotify.com/v1/me/top/tracks?limit=1', headers=headers)
     track_error = processStatusCode(track_data.status_code) + " - track_data"
 
     if track_data.status_code == 200:
