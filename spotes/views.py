@@ -98,22 +98,19 @@ def play(request):
     try:
         # アクセストークンの取得
         access_token = request.session["access_token"]
-        headers = {'Authorization': 'Bearer ' + access_token,
-                    'Accept-Language': 'ja'}
+        headers = {'Authorization': 'Bearer ' + access_token}
     except:
         # アクセストークンがない場合はログインページにリダイレクト
         return redirect(reverse('login'))
 
+    # Spotify APIから現在再生中のトラック情報を取得
     track_data = requests.get('https://api.spotify.com/v1/me/top/tracks', headers=headers)
     track_error = processStatusCode(track_data.status_code) + " - track_data"
 
     if track_data.status_code == 200:
-        # ステータスコードが200の場合はJSONレスポンスを取得し、ユーザー情報を作成
+        # ステータスコードが200の場合はJSONレスポンスを取得し、トラック情報とジャケットURLを作成
         track_data = track_data.json()
-        track_data = makePlay(track_data)
-    else:
-        return redirect(reverse('login'))
-
+        track_data = makeTrack(track_data)
 
     if track_data == 1:
         # track_dataが1の場合はポッドキャストが再生中であることを示すエラーメッセージを設定
