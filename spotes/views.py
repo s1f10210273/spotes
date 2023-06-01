@@ -122,8 +122,7 @@ def play(request):
 
     if track_data.status_code == 200:
         # ステータスコードが200の場合はJSONレスポンスを取得し、トラック情報とジャケットURLを作成
-        track_data = track_data.json()
-        track_data, jacket_url = makePlay(track_data)
+        track_data = track_data.json()["items"][0]["name"]
     elif track_data.status_code == 401:
         # ステータスコードが401の場合は認証エラーであるため、ログインページにリダイレクト
         return redirect(reverse('login'))
@@ -147,7 +146,6 @@ def play(request):
     # コンテキストに必要なデータを追加
     context = {
         'track_data': track_data,
-        'bgImageURL': jacket_url,
         'user_data': user_data,
         'track_error': track_error,
         'user_error': user_error,
