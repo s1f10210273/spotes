@@ -116,13 +116,11 @@ def play(request):
         # アクセストークンがない場合はログインページにリダイレクト
         return redirect(reverse('login'))
 
-    # Spotify APIから現在再生中のトラック情報を取得
     track_data = requests.get('https://api.spotify.com/v1/me/top/tracks', headers=headers)
     track_error = processStatusCode(track_data.status_code) + " - track_data"
 
     if track_data.status_code == 200:
-        # ステータスコードが200の場合はJSONレスポンスを取得し、トラック情報とジャケットURLを作成
-        track_data = track_data.json()["items"]
+        track_data = track_data.json()
         track_name = track_data['items'][0]['name']
         artist_name = track_data['items'][0]['artists'][0]['name']
         track_url = track_data['item'][0]['external_urls'][0]['spotify']
