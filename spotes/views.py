@@ -106,7 +106,7 @@ def home(request):
 
 
 
-def home(request):
+def play(request):
     try:
         # アクセストークンの取得
         access_token = request.session["access_token"]
