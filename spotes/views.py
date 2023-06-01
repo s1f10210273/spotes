@@ -121,9 +121,18 @@ def play(request):
 
     if track_data.status_code == 200:
         track_data = track_data.json()
-        track_name = track_data['items']['name']
-        artist_name = track_data['items']['artists']['name']
-        track_url = track_data['item']['external_urls']['spotify']
+        track_items = track_data['items']
+
+        if len(track_items) > 0:
+            # 最初のトラックの情報にアクセス
+            track_name = track_items[0]['name']
+            artist_name = track_items[0]['artists'][0]['name']
+            track_url = track_items[0]['external_urls']['spotify']
+        else:
+            # トラックが存在しない場合
+            track_name = None
+            artist_name = None
+            track_url = None
 
     elif track_data.status_code == 401:
         # ステータスコードが401の場合は認証エラーであるため、ログインページにリダイレクト
@@ -157,6 +166,7 @@ def play(request):
 
     # レンダリングするテンプレートとコンテキストを指定してレスポンスを返す
     return render(request, 'spotes/home.html', context)
+
 
 
 

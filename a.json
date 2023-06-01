@@ -1,24 +1,4 @@
-ENDPOINT
-https: //api.spotify.com/v1/me/top/{type}
-    type
-tracks
-time_range
-medium_term
-limit
-10
-offset
-5
-REQUEST SAMPLE
-
-cURL
-
-Wget
-
-HTTPie
-curl--request GET\
---url https: //api.spotify.com/v1/me/top/tracks \
-    --header 'Authorization: Bearer BQCVGo...GlZy2d'
-RESPONSE SAMPLE {
+{
     "href": "https://api.spotify.com/v1/me/top/tracks",
     "limit": 20,
     "next": "https://api.spotify.com/v1/me/top/tracks?limit=20&offset=20",
