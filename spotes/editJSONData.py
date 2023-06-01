@@ -56,11 +56,11 @@ def makeUser(user_data):
 def makePlay(current_playing):
     if current_playing is None:
         return 0
-    elif current_playing["type"] == "track":
-        album = current_playing["album"]
-        track_name = current_playing["name"]
-        artist_name = current_playing["artists"][0]["name"]
-        track_url = current_playing["external_urls"]["spotify"]
+    else:
+        album = current_playing['item']["album"]
+        track_name = current_playing['item']["name"]
+        artist_name = current_playing['item']["artists"][0]["name"]
+        track_url = current_playing['item']["external_urls"]["spotify"]
 
         album_name = album["name"]
         album_artist = album["artists"][0]["name"]
