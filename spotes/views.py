@@ -121,9 +121,9 @@ def play(request):
 
     if track_data.status_code == 200:
         track_data = track_data.json()
-        track_name = track_data['items'][0]['name']
-        artist_name = track_data['items'][0]['artists'][0]['name']
-        track_url = track_data['item'][0]['external_urls'][0]['spotify']
+        track_name = track_data['items']['name']
+        artist_name = track_data['items']['artists']['name']
+        track_url = track_data['item']['external_urls']['spotify']
 
     elif track_data.status_code == 401:
         # ステータスコードが401の場合は認証エラーであるため、ログインページにリダイレクト
