@@ -94,4 +94,45 @@ def home(request):
     return render(request, 'spotes/home.html', context)
 
 
+def play(request):
+    try:
+        access_token = request.session["access_token"]
+        headers = {'Authorization': 'Bearer ' + access_token,
+                    'Accept-Language': 'ja'}
+    except:
+        return redirect(reverse('login'))
+
+
+    track_data = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
+    track_error = processStatusCode(track_data.status_code) + " - track_data"
+    if track_data.status_code == 200:
+        track_data = track_data.json()
+        track_data, jacket_url = makeTrack(track_data)
+    elif track_data.status_code == 401:
+        return redirect(reverse('login'))
+    else:
+        jacket_url = None
+
+    if track_data == 1:
+        track_error = 'Podcast is playing.'
+
+
+    user_data = requests.get('https://api.spotify.com/v1/me', headers=headers)
+    user_error = processStatusCode(user_data.status_code) + " - user_data"
+    if user_data.status_code == 200:
+        user_data = user_data.json()
+        user_data = makeUser(user_data)
+
+    context = {
+        'title': 'Home | SpotifyNowPlaying',
+        'track_data': track_data,
+        'bgImageURL': jacket_url,
+        'user_data': user_data,
+        'track_error': track_error,
+        'user_error': user_error,
+    }
+
+    return render(request, 'spotes/play.html', context)
+
+
 
