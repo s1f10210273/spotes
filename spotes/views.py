@@ -5,7 +5,7 @@ from config.settings import SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI, SPOTIFY_CLI
 import requests
 import json
 from .getStatusCode import processStatusCode
-from .editJSONData import makeTrack, makeUser
+from .editJSONData import makeTrack, makeUser, makePlay
 
 
 
@@ -106,7 +106,7 @@ def home(request):
 
 
 
-def play(request):
+def home(request):
     try:
         # アクセストークンの取得
         access_token = request.session["access_token"]
@@ -116,23 +116,14 @@ def play(request):
         # アクセストークンがない場合はログインページにリダイレクト
         return redirect(reverse('login'))
 
-    track_data = requests.get('https://api.spotify.com/v1/me/top/tracks', headers=headers)
+    # Spotify APIから現在再生中のトラック情報を取得
+    track_data = requests.get('https://api.spotify.com/v1/me/player/currently-playing', headers=headers)
     track_error = processStatusCode(track_data.status_code) + " - track_data"
 
-    track_name = None
-    artist_name = None
-    track_url = None
-
     if track_data.status_code == 200:
+        # ステータスコードが200の場合はJSONレスポンスを取得し、トラック情報とジャケットURLを作成
         track_data = track_data.json()
-        track_items = track_data['items']
-
-        if len(track_items) > 0:
-            # 最初のトラックの情報にアクセス
-            track_name = track_items['name']
-            artist_name = track_items['artists']['name']
-            track_url = track_items['external_urls']['spotify']
-
+        track_data, jacket_url = makePlay(track_data)
     elif track_data.status_code == 401:
         # ステータスコードが401の場合は認証エラーであるため、ログインページにリダイレクト
         return redirect(reverse('login'))
@@ -155,9 +146,8 @@ def play(request):
 
     # コンテキストに必要なデータを追加
     context = {
-        'track_name': track_name,
-        'artist_name': artist_name,
-        'track_url': track_url,
+        'track_data': track_data,
+        'bgImageURL': jacket_url,
         'user_data': user_data,
         'track_error': track_error,
         'user_error': user_error,
