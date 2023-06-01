@@ -53,43 +53,51 @@ def makeUser(user_data):
 
 
 
-def makePlay(current_playing):
-    if current_playing is None:
+def makePlay(track_data):
+    if track_data is None:
         return 0
     else:
-        album = current_playing['item']["album"]
-        track_name = current_playing['item']["name"]
-        artist_name = current_playing['item']["artists"][0]["name"]
-        track_url = current_playing['item']["external_urls"]["spotify"]
+        base = track_data["items"]
+    track_name_lst = []
+    count=1
+    while(True):
+        try:
+            track_name_lst.append=(base[count]["name"])
+            count+=1
+        except IndexError:
+            break
 
-        album_name = album["name"]
-        album_artist = album["artists"][0]["name"]
-        album_url = album["external_urls"]["spotify"]
-        jacket_url = album["images"][0]["url"]
+    artist_name_lst = []
+    count=1
+    while(True):
+        try:
+            artist_name_lst.append=(base[count]["artists"][0]["name"])
+            count+=1
+        except IndexError:
+            break
 
-        count = 1
-        while True:
-            try:
-                artist_name += ", " + current_playing['item']["artists"][count]["name"]
-                count += 1
-            except IndexError:
-                break
+    track_url_lst = []
+    count=1
+    while(True):
+        try:
+            track_url_lst.append=(base[count]['external_urls']['spotify'])
+            count+=1
+        except IndexError:
+            break
 
-        count = 1
-        while True:
-            try:
-                album_artist += ", " + album["artists"][count]["name"]
-                count += 1
-            except IndexError:
-                break
+    jacket_url_lst = []
+    count=1
+    while(True):
+        try:
+            jacket_url_lst.append=(base[count]['album']['images'][0]['url'])
+            count+=1
+        except IndexError:
+            break
 
-        track_data = {
-            "track_name": track_name,
-            "artist_name": artist_name,
-            "track_url": track_url,
-            "album_name": album_name,
-            "album_artist": album_artist,
-            "album_url": album_url,
-        }
-
-        return track_data, jacket_url
+    track_data = {
+        'track_name_lst': track_name_lst,
+        'artist_name_lst': artist_name_lst,
+        'track_url_lst': track_url_lst,
+        'jacket_url_lst': jacket_url_lst,
+    }
+    return track_data

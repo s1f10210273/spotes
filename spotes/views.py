@@ -20,7 +20,7 @@ def spotify_login(request):
     params = {
         'client_id': SPOTIFY_CLIENT_ID,
         'response_type': 'code',
-        'redirect_uri': "https://spoti-quct.onrender.com/spotes/callback/",
+        'redirect_uri': "http://127.0.0.1:8000/spotes/callback/",
         'scope': scope,
     }
     return redirect(f"{auth_url}?{urlencode(params)}")
@@ -41,7 +41,7 @@ def callback(request):
     params = {
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': "https://spoti-quct.onrender.com/spotes/callback/",
+        'redirect_uri': "http://127.0.0.1:8000/spotes/callback/",
         'client_id': SPOTIFY_CLIENT_ID,
         'client_secret': SPOTIFY_CLIENT_SECRET,
     }
@@ -93,7 +93,6 @@ def home(request):
 
     # コンテキストに必要なデータを追加
     context = {
-        'title': 'Home | SpotifyNowPlaying',
         'track_data': track_data,
         'bgImageURL': jacket_url,
         'user_data': user_data,
@@ -121,14 +120,12 @@ def play(request):
     track_error = processStatusCode(track_data.status_code) + " - track_data"
 
     if track_data.status_code == 200:
-        # ステータスコードが200の場合はJSONレスポンスを取得し、トラック情報とジャケットURLを作成
-        track_data = track_data.json()["items"][0]["name"]
-    elif track_data.status_code == 401:
-        # ステータスコードが401の場合は認証エラーであるため、ログインページにリダイレクト
-        return redirect(reverse('login'))
+        # ステータスコードが200の場合はJSONレスポンスを取得し、ユーザー情報を作成
+        track_data = track_data.json()
+        track_data = makePlay(track_data)
     else:
-        # それ以外のステータスコードの場合はジャケットURLをNoneに設定
-        jacket_url = None
+        return redirect(reverse('login'))
+
 
     if track_data == 1:
         # track_dataが1の場合はポッドキャストが再生中であることを示すエラーメッセージを設定
