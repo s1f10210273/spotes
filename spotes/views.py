@@ -164,4 +164,4 @@ def play(request):
     }
 
     # レンダリングするテンプレートとコンテキストを指定してレスポンスを返す
-    return render(request, 'spotes/home.html', context)
+    return render(request, 'spotes/play.html', context)
