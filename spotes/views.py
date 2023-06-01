@@ -129,9 +129,9 @@ def play(request):
 
         if len(track_items) > 0:
             # 最初のトラックの情報にアクセス
-            track_name = track_items[0]['name']
-            artist_name = track_items[0]['artists'][0]['name']
-            track_url = track_items[0]['external_urls']['spotify']
+            track_name = track_items['name']
+            artist_name = track_items['artists']['name']
+            track_url = track_items['external_urls']['spotify']
 
     elif track_data.status_code == 401:
         # ステータスコードが401の場合は認証エラーであるため、ログインページにリダイレクト
