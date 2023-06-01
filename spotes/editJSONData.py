@@ -70,7 +70,7 @@ def makePlay(current_playing):
         count = 1
         while True:
             try:
-                artist_name += ", " + current_playing["artists"][count]["name"]
+                artist_name += ", " + current_playing['item']["artists"][count]["name"]
                 count += 1
             except IndexError:
                 break
