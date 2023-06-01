@@ -7,5 +7,5 @@ urlpatterns = [
     path("logout", views.spotify_logout, name="logout"),
     path("callback/", views.callback, name="callback"),
     path("home", views.home, name="home"),
-    path("play", views.play, name="play"),
+    path("play/", views.play, name="play"),
 ]
