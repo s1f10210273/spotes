@@ -55,33 +55,43 @@ def callback(request):
 
 def home(request):
     try:
+        # アクセストークンの取得
         access_token = request.session["access_token"]
         headers = {'Authorization': 'Bearer ' + access_token,
                     'Accept-Language': 'ja'}
     except:
+        # アクセストークンがない場合はログインページにリダイレクト
         return redirect(reverse('login'))
 
-
+    # Spotify APIから現在再生中のトラック情報を取得
     track_data = requests.get('https://api.spotify.com/v1/me/player/currently-playing', headers=headers)
     track_error = processStatusCode(track_data.status_code) + " - track_data"
+
     if track_data.status_code == 200:
+        # ステータスコードが200の場合はJSONレスポンスを取得し、トラック情報とジャケットURLを作成
         track_data = track_data.json()
         track_data, jacket_url = makeTrack(track_data)
     elif track_data.status_code == 401:
+        # ステータスコードが401の場合は認証エラーであるため、ログインページにリダイレクト
         return redirect(reverse('login'))
     else:
+        # それ以外のステータスコードの場合はジャケットURLをNoneに設定
         jacket_url = None
 
     if track_data == 1:
+        # track_dataが1の場合はポッドキャストが再生中であることを示すエラーメッセージを設定
         track_error = 'Podcast is playing.'
 
-
+    # Spotify APIからユーザー情報を取得
     user_data = requests.get('https://api.spotify.com/v1/me', headers=headers)
     user_error = processStatusCode(user_data.status_code) + " - user_data"
+
     if user_data.status_code == 200:
+        # ステータスコードが200の場合はJSONレスポンスを取得し、ユーザー情報を作成
         user_data = user_data.json()
         user_data = makeUser(user_data)
 
+    # コンテキストに必要なデータを追加
     context = {
         'title': 'Home | SpotifyNowPlaying',
         'track_data': track_data,
@@ -91,41 +101,65 @@ def home(request):
         'user_error': user_error,
     }
 
+    # レンダリングするテンプレートとコンテキストを指定してレスポンスを返す
     return render(request, 'spotes/home.html', context)
+
 
 
 def play(request):
     try:
+        # アクセストークンの取得
         access_token = request.session["access_token"]
         headers = {'Authorization': 'Bearer ' + access_token,
                     'Accept-Language': 'ja'}
     except:
+        # アクセストークンがない場合はログインページにリダイレクト
         return redirect(reverse('login'))
 
-
-    track_data = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers)
+    # Spotify APIから現在再生中のトラック情報を取得
+    track_data = requests.get('https://api.spotify.com/v1/me/top/tracks', headers=headers)
     track_error = processStatusCode(track_data.status_code) + " - track_data"
-    if track_data.status_code == 200:
-        top_tracks = track_data.json()['items']
-    else:
-        top_tracks = []
 
+    if track_data.status_code == 200:
+        # ステータスコードが200の場合はJSONレスポンスを取得し、トラック情報とジャケットURLを作成
+        track_data = track_data.json()["items"]
+        track_name = track_data['items'][0]['name']
+        artist_name = track_data['items'][0]['artists'][0]['name']
+        track_url = track_data['item'][0]['external_urls'][0]['spotify']
+
+    elif track_data.status_code == 401:
+        # ステータスコードが401の場合は認証エラーであるため、ログインページにリダイレクト
+        return redirect(reverse('login'))
+    else:
+        # それ以外のステータスコードの場合はジャケットURLをNoneに設定
+        jacket_url = None
+
+    if track_data == 1:
+        # track_dataが1の場合はポッドキャストが再生中であることを示すエラーメッセージを設定
+        track_error = 'Podcast is playing.'
+
+    # Spotify APIからユーザー情報を取得
     user_data = requests.get('https://api.spotify.com/v1/me', headers=headers)
     user_error = processStatusCode(user_data.status_code) + " - user_data"
+
     if user_data.status_code == 200:
+        # ステータスコードが200の場合はJSONレスポンスを取得し、ユーザー情報を作成
         user_data = user_data.json()
         user_data = makeUser(user_data)
 
+    # コンテキストに必要なデータを追加
     context = {
-        'title': 'Home | SpotifyNowPlaying',
-        'track_data': track_data,
+        'track_name': track_name,
+        'artist_name': artist_name,
+        'track_url': track_url,
         'user_data': user_data,
         'track_error': track_error,
         'user_error': user_error,
-        'top_tracks': top_tracks,
     }
 
-    return render(request, 'spotes/play.html', context)
+    # レンダリングするテンプレートとコンテキストを指定してレスポンスを返す
+    return render(request, 'spotes/home.html', context)
+
 
 
 
