@@ -8,4 +8,5 @@ urlpatterns = [
     path("callback/", views.callback, name="callback"),
     path("home", views.home, name="home"),
     path("play/", views.play, name="play"),
+    path('addplay/', views.addplay, name='addplay'),
 ]
