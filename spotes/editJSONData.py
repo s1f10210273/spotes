@@ -112,7 +112,7 @@ def makePlaylst(track_data):
     if track_data is None:
         return 0
     track_uri_lst = []
-    count=1
+    count=0
     while(True):
         try:
             track_uri_lst.append(str(track_data["items"][count]["uri"]))
