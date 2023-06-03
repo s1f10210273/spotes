@@ -52,7 +52,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 
 #ポップアップの書き換え
-X_FRAME_OPTIONS = 'ALLOW-FROM http://127.0.0.1:8000/'
+X_FRAME_OPTIONS = 'ALLOW-FROM https://spoti-quct.onrender.com'
 
 ROOT_URLCONF = 'config.urls'
 

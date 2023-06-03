@@ -111,13 +111,12 @@ def makePlay(track_data):
 def makePlaylst(track_data):
     if track_data is None:
         return 0
-    base = track_data["items"]
-    track_uri_lst = ""
+    track_uri_lst = []
     count=1
     while(True):
         try:
-            track_uri_lst += '"' +base[count]["uri"]+ '"'+ ','
+            track_uri_lst.append(str(track_data["items"][count]["uri"]))
             count+=1
         except IndexError:
             break
-    return track_uri_lst[:-2]
+    return track_uri_lst

@@ -20,12 +20,13 @@ def spotify_login(request):
         'user-top-read',
         'user-read-currently-playing',
         'playlist-modify-private',
+        'playlist-modify-public'
     ]
     scope = ' '.join(scopes)
     params = {
         'client_id': SPOTIFY_CLIENT_ID,
         'response_type': 'code',
-        'redirect_uri': "http://127.0.0.1:8000/spotes/callback/",
+        'redirect_uri': "https://spoti-quct.onrender.com/spotes/callback/",
         'scope': scope,
     }
     return redirect(f"{auth_url}?{urlencode(params)}")
@@ -36,7 +37,7 @@ def callback(request):
     params = {
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': "http://127.0.0.1:8000/spotes/callback/",
+        'redirect_uri': "https://spoti-quct.onrender.com/spotes/callback/",
         'client_id': SPOTIFY_CLIENT_ID,
         'client_secret': SPOTIFY_CLIENT_SECRET,
     }
@@ -45,7 +46,7 @@ def callback(request):
     access_token = data['access_token']
     request.session["access_token"] = access_token
 
-    return redirect(reverse('home'))
+    return redirect(reverse('play'))
 
 
 def home(request):
@@ -217,17 +218,16 @@ def addplay(request):
     url = "https://api.spotify.com/v1/playlists/" + responce.json()["id"] + "/tracks"
     headers = {'Authorization': 'Bearer ' + access_token,
             "Content-Type": "application/json"}
-    data = {
-        "uris": [
-        track_data
-    ],
+    json = {
+        "uris": track_data
+    ,
         "position": 0
     }
-    er = requests.post(url, headers=headers, json=data)
+    er = requests.post(url, headers=headers, json=json)
 
     # コンテキストに必要なデータを追加
     context = {
-        'error': er.json(),
+        'error': "https://open.spotify.com/playlist/" + responce.json()["id"],
         'track_error': track_error,
         'user_error': user_error,
     }
