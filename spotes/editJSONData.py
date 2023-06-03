@@ -59,7 +59,7 @@ def makePlay(track_data):
         return 0
     base = track_data["items"]
     track_name_lst = []
-    count=1
+    count=0
     while(True):
         try:
             track_name_lst.append(base[count]["name"])
@@ -68,7 +68,7 @@ def makePlay(track_data):
             break
 
     artist_name_lst = []
-    count=1
+    count=0
     while(True):
         try:
             artist_name_lst.append(base[count]["artists"][0]["name"])
@@ -77,7 +77,7 @@ def makePlay(track_data):
             break
 
     track_url_lst = []
-    count=1
+    count=0
     while(True):
         try:
             track_url_lst.append(base[count]['external_urls']['spotify'])
@@ -86,7 +86,7 @@ def makePlay(track_data):
             break
 
     jacket_url_lst = []
-    count=1
+    count=0
     while(True):
         try:
             jacket_url_lst.append(base[count]['album']['images'][0]['url'])
